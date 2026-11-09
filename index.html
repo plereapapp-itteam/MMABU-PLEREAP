@@ -6308,7 +6308,7 @@ function atOf(r){return r.at||r.no}
 function nextAt(k){return (st(k).att||0)+1}
 function passAt(k){var z=st(k); if(z.pa)return z.pa; var P=z.tr.filter(okR); return P.length?atOf(P[0]):0}
 function status(k){var z=st(k), a=z.att||0, pa=passAt(k); if(!a)return ''; return '<div class="sm-stat '+(pa?'p':'f')+'"><b>'+(pa?'✅ PASSED on '+ord(pa)+' ATTEMPT':'⏳ Not yet passed')+'</b><span>'+a+' attempt'+(a>1?'s':'')+' on record in this subject, counting every set of three, earlier sets that were reset, and discarded trials.</span></div>'}
-function idGet(){return {n:PROF?profName(PROF):'',s:profInst(),m:PROF?PROF.s:''}}
+function idGet(){return {n:PROF?profName(PROF):'',s:profInst()||(PROF&&PROF.s?PROF.s:''),m:PROF?PROF.s:''}}
 function idOK(d){return d.n.length>=5&&d.n.split(' ').length>=2&&d.s.length>=3}
 function idOf(R){var d=idGet(); return {n:(R&&R.nm)||d.n,s:d.s||(R&&R.sc)||'',m:d.m||''}}
 function day(d){var x=new Date(d); return x.toLocaleDateString(undefined,{month:'short',day:'numeric'})}
@@ -6334,7 +6334,7 @@ function lobby(){var s=sj(), z=st(s.k), n=z.tr.length, sd=SD[s.k], h='';
   sd.d.forEach(function(d){h+='<div class="sm-tr"><span>'+esc(d[0])+'</span><i><u style="width:'+(d[1]/mx*100)+'%"></u></i><b>'+d[1]+'</b></div>'});
   var cg=[0,0,0,0,0]; sd.d.forEach(function(d){d[2].forEach(function(g,b){cg[b]+=g})});
   h+='<p class="lead" style="margin-top:14px">Items per cognitive level.</p><div class="sm-cg">'+cg.map(function(g,b){return g?'<span style="--b:'+BC[b]+'">'+BN[b]+' <b>'+g+'</b></span>':''}).join('')+'</div></div></details>';
-  if(!(X&&X.k!==s.k)){var me=idGet(); h+='<div class="sm-id" id="smId"><h4>🪪 Examinee</h4>'+(me.n&&me.s?'<p>Taken from your student profile, entered once on the opening screen. Your name, medical school and hospital institution are printed on your answer sheet and on your downloadable report.</p><div class="sm-idv me"><div><span>Name</span><b>'+esc(me.n)+'</b></div><div><span>Medical school</span><b>'+esc(me.m)+'</b></div><div><span>Institution</span><b>'+esc(me.s)+'</b></div></div>':'<p>Your student profile has not been completed yet. Your name and hospital institution are needed before you take a trial.</p><button type="button" class="btn sm" id="smProf">Complete my student profile</button>')+'</div>'}
+  if(!(X&&X.k!==s.k)){var me=idGet(); h+='<div class="sm-id" id="smId"><h4>🪪 Examinee</h4>'+(me.n&&me.s?'<p>Taken from your student profile, entered once on the opening screen. Your name and medical school are printed on your answer sheet and downloadable report. If no hospital institution is provided, your medical school is also shown as the institution.</p><div class="sm-idv me"><div><span>Name</span><b>'+esc(me.n)+'</b></div><div><span>Medical school</span><b>'+esc(me.m)+'</b></div><div><span>Institution</span><b>'+esc(me.s)+'</b></div></div>':'<p>Your student profile has not been completed yet. Enter your name, medical school, and year level on the opening screen before taking a trial.</p><button type="button" class="btn sm" id="smProf">Complete my student profile</button>')+'</div>'}
   h+='<div class="mq-foot" style="border:0;padding:0">'+(n?'<button type="button" class="btn ghost sm" id="smRep">Open my report</button>':'')+'<span class="sp"></span>'+((X&&X.k!==s.k)?'':'<button type="button" class="btn" id="smStart">'+(n>=MAXT?'Start a new set of three trials':'Begin Trial '+(n+1)+' of '+MAXT)+'</button>')+'</div>';
   body.innerHTML=h}
 /* ---------- composing a paper from the table of specifications ---------- */
